@@ -1,7 +1,10 @@
 pipeline {
   agent any
   stages {
-    stage('Build') {
+    stage('Build develop') {
+      when {
+			  branch 'develop'
+		  }
       steps {
         bat 'echo Build'
       }
@@ -20,7 +23,10 @@ pipeline {
         }
       }
     }
-    stage('Deploy') {
+    stage('Deploy master') {
+      when {
+			  branch 'master'
+		  }
       steps {
         bat 'echo deploy'
       }
