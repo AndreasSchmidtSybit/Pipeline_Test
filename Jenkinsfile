@@ -11,14 +11,14 @@ pipeline {
     }
     stage('Test') {
       parallel {
-        stage('Test') {
+        stage('some Tests') {
           steps {
-            bat 'echo Test'
+            bat 'echo some Test'
           }
         }
-        stage('Ui Test') {
+        stage('More Tests') {
           steps {
-            bat 'echo UI Test'
+            bat 'echo More Tests'
           }
         }
       }
