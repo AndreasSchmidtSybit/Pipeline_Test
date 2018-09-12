@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('Build develop') {
+    stage('Build develop || master') {
       when {
-			  branch 'develop'
+			  branch 'develop' || branch 'master'
 		  }
       steps {
         bat 'echo Build'
