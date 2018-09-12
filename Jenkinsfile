@@ -39,7 +39,7 @@ pipeline {
   }
   post {
         failure {
-            mail (to: ast@sybit.de,
+            mail (to: 'ast@sybit.de',
                   subject: 'Build $JOB_NAME failed')
         }
   }
