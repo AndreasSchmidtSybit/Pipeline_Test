@@ -3,7 +3,10 @@ pipeline {
   stages {
     stage('Build develop || master') {
       when {
-	  branch ('develop|master') 
+	  expression {
+        	env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop';
+	    }
+   	 }
       }
       steps {
         bat 'echo Build'
