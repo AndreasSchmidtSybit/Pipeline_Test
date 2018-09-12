@@ -41,7 +41,4 @@ pipeline {
       }
     }
   }
-  environment {
-    Foo = 'Bar'
-  }
 }
