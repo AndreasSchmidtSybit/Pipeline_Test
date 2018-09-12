@@ -3,8 +3,10 @@ pipeline {
   stages {
     stage('Build develop || master') {
       when {
-			  branch 'develop' || branch 'master'
-		  }
+	 expression {
+	    branch 'develop' || branch 'master'
+	 }
+      }
       steps {
         bat 'echo Build'
       }
