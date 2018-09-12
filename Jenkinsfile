@@ -14,7 +14,8 @@ pipeline {
     	  }
       }
       steps {
-	      bat 'echo build with version:' + RELEASE_VERSION + ', 1,2 los'
+	      bat 'echo build with version:' + RELEASE_VERSION + ', 1.Versuch'
+	      bat 'echo build with version:' + $params.release_version + ', 2.Versuch'
       }
     }
     stage('Test') {
