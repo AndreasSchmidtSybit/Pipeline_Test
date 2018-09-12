@@ -3,6 +3,9 @@ pipeline {
   parameters {
        string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
   }
+  environment {
+      RELEASE_VERSION = credentials("${params.release_version}")
+  } 
   stages {
     stage('Build develop || master') {
       when {
@@ -11,7 +14,7 @@ pipeline {
     	  }
       }
       steps {
-	      bat 'echo build with version: ${params.release_version}' 
+	      bat 'echo build with version:' + RELEASE_VERSION + ', 1,2 los'
       }
     }
     stage('Test') {
