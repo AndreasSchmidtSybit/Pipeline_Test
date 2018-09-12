@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  parameters {
+       string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
+  }
   stages {
     stage('Build develop || master') {
       when {
@@ -8,10 +11,7 @@ pipeline {
     	  }
       }
       steps {
-	      withEnv(["GIT_BRANCH=$BRANCH_NAME"]) {
-		      bat 'echo ${GIT_BRANCH}'
-		      bat 'echo $GIT_BRANCH'		      
-	      }
+	      bat 'echo build with version: ${params.release_version}' 
       }
     }
     stage('Test') {
