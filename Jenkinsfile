@@ -10,7 +10,7 @@ pipeline {
     stage('Build develop || master') {
       when {
 	  expression {
-             env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && params.release_version != '';
+             env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && RELEASE_VERSION != '';
     	  }
       }
       steps {
