@@ -4,9 +4,8 @@ pipeline {
     stage('Build develop || master') {
       when {
 	  expression {
-        	env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop';
-	    }
-   	 }
+             env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop';
+    	  }
       }
       steps {
         bat 'echo Build'
