@@ -8,9 +8,10 @@ pipeline {
     	  }
       }
       steps {
-	      bat 'echo ${env.BRANCH_NAME}'
-	      bat 'echo $BRANCH_NAME'
-	      bat 'echo $env.BRANCH_NAME'
+	      withEnv(["GIT_BRANCH=$BRANCH_NAME"]) {
+		      bat 'echo ${GIT_BRANCH}'
+		      bat 'echo $GIT_BRANCH'		      
+	      }
       }
     }
     stage('Test') {
