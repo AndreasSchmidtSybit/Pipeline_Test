@@ -8,7 +8,7 @@ pipeline {
     	  }
       }
       steps {
-        bat 'echo Build'
+	      bat 'echo Build ${env.BRANCH_NAME}'
       }
     }
     stage('Test') {
