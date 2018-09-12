@@ -3,9 +3,6 @@ pipeline {
   parameters {
        string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
   }
-  environment {
-      RELEASE_VERSION = credentials("${params.release_version}")
-  } 
   stages {
     stage('Build develop || master') {
       when {
@@ -13,9 +10,8 @@ pipeline {
              env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && RELEASE_VERSION != '';
     	  }
       }
-      steps {
-	      bat 'echo build with version:' + RELEASE_VERSION + ', 1.Versuch'
-	      bat 'echo build with version:' + $params.release_version + ', 2.Versuch'
+      steps {	      
+	      bat 'echo build with version:' + params.release_version
       }
     }
     stage('Test') {
