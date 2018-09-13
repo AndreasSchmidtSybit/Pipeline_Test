@@ -38,14 +38,12 @@ pipeline {
         }
         stage('Git push tag') {
             steps {
-                //sshagent(['jenkins']) {
-                      bat 'Jobname 1 :' + $JOB_NAME
-                      bat 'Jobname 2 :' + JOB_NAME
-                      bat 'Jobname 3 :' + ${JOB_NAME}
-                      bat 'Jobname 4 :' + ${env.JOB_NAME}
-                      bat 'Jobname 5 :' + env.JOB_NAME
-                      bat 'Jobname 6 :' + $env.JOB_NAME
-                //}
+                  bat 'Jobname 1 : $JOB_NAME'
+                  bat 'Jobname 2 : JOB_NAME'
+                  bat 'Jobname 3 : ${JOB_NAME}'
+                  bat 'Jobname 4 : ${env.JOB_NAME}'
+                  bat 'Jobname 5 : env.JOB_NAME'
+                  bat 'Jobname 6 : $env.JOB_NAME'
             }
         }
     }
@@ -53,7 +51,7 @@ pipeline {
         failure {
             mail (from: 'jenkins.sybit.de',
                   to: 'ast@sybit.de',
-                  subject: 'Build' +  JOB_NAME + ' failed',
+                  subject: 'Build' +  env.JOB_NAME + ' failed',
                   body: '')
         }
     }
