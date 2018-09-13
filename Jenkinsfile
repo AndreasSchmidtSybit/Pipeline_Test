@@ -37,8 +37,10 @@ pipeline {
             }
         }
         stage('Git push tag') {
-            sshagent(['git-credentials-id']) {
-                  bat "git tag"
+            steps {
+                sshagent(['jenkins']) {
+                      bat "git tag"
+                }
             }
         }
     }
