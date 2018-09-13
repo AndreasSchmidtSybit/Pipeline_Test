@@ -38,9 +38,9 @@ pipeline {
         }
         stage('Git push tag') {
             steps {
-                sshagent(['jenkins']) {
-                      bat "git tag"
-                }
+                //sshagent(['jenkins']) {
+                      bat 'git tag'
+                //}
             }
         }
     }
