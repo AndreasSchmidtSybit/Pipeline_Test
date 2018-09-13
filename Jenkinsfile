@@ -1,32 +1,53 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        bat 'echo Build'
-      }
+    agent any
+    parameters {
+       string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
     }
-    stage('Test') {
-      parallel {
+    stages {
+        stage('Build develop || master') {
+            when {
+                expression {
+                     env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && RELEASE_VERSION != '';
+                }
+            }
+            steps {
+              bat 'echo build with version:' + params.release_version
+            }
+        }
         stage('Test') {
-          steps {
-            bat 'echo Test'
-          }
+            parallel {
+                stage('some Tests') {
+                  steps {
+                    bat 'echo some Test'
+                  }
+                }
+                stage('More Tests') {
+                  steps {
+                    bat 'echo More Tests'
+                  }
+                }
+            }
         }
-        stage('Ui Test') {
-          steps {
-            bat 'echo UI Test'
-          }
+        stage('Deploy master') {
+            when {
+                branch 'master'
+            }
+            steps {
+                bat 'echo deploy'
+            }
         }
-      }
+        stage('Git push tag') {
+            sshagent(['git-credentials-id']) {
+                  bat "git tag"
+            }
+        }
     }
-    stage('Deploy') {
-      steps {
-        bat 'echo deploy'
-      }
+    post {
+        failure {
+            mail (from: 'jenkins.sybit.de',
+                  to: 'ast@sybit.de',
+                  subject: 'Build' +  $JOB_NAME + ' failed',
+                  body: '')
+        }
     }
-  }
-  environment {
-    Foo = 'Bar'
-  }
 }
