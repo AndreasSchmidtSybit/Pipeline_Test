@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Git push tag') {
             steps {
-                  bat "Jobname : ${env.JOB_NAME}"
+                  bat "echo Jobname : ${env.JOB_NAME}"
             }
         }
     }
