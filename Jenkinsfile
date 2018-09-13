@@ -7,7 +7,7 @@ pipeline {
         stage('Build develop || master') {
             when {
                 expression {
-                     env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && RELEASE_VERSION != '';
+                     env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && params.release_version != '';
                 }
             }
             steps {
@@ -39,7 +39,12 @@ pipeline {
         stage('Git push tag') {
             steps {
                 //sshagent(['jenkins']) {
-                      bat 'Jobname :' + JOB_NAME
+                      bat 'Jobname 1 :' + $JOB_NAME
+                      bat 'Jobname 2 :' + JOB_NAME
+                      bat 'Jobname 3 :' + ${JOB_NAME}
+                      bat 'Jobname 4 :' + ${env.JOB_NAME}
+                      bat 'Jobname 5 :' + env.JOB_NAME
+                      bat 'Jobname 6 :' + $env.JOB_NAME
                 //}
             }
         }
