@@ -10,41 +10,43 @@ pipeline {
                      env.BRANCH_NAME == 'develop' && params.release_version == '';
                 }
             }
-            stage('Build develop || master') {
-                when {
-                    expression {
-                         env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && params.release_version != '';
+            steps {
+                stage('Build develop || master') {
+                    when {
+                        expression {
+                             env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && params.release_version != '';
+                        }
+                    }
+                    steps {
+                      bat 'echo build with version:' + params.release_version
                     }
                 }
-                steps {
-                  bat 'echo build with version:' + params.release_version
-                }
-            }
-            stage('Test') {
-                parallel {
-                    stage('some Tests') {
-                      steps {
-                        bat 'echo some Test'
-                      }
-                    }
-                    stage('More Tests') {
-                      steps {
-                        bat 'echo More Tests'
-                      }
+                stage('Test') {
+                    parallel {
+                        stage('some Tests') {
+                          steps {
+                            bat 'echo some Test'
+                          }
+                        }
+                        stage('More Tests') {
+                          steps {
+                            bat 'echo More Tests'
+                          }
+                        }
                     }
                 }
-            }
-            stage('Deploy master') {
-                when {
-                    branch 'master'
+                stage('Deploy master') {
+                    when {
+                        branch 'master'
+                    }
+                    steps {
+                        bat 'echo deploy'
+                    }
                 }
-                steps {
-                    bat 'echo deploy'
-                }
-            }
-            stage('Git push tag') {
-                steps {
-                      bat "echo Jobname : ${env.JOB_NAME}"
+                stage('Git push tag') {
+                    steps {
+                          bat "echo Jobname : ${env.JOB_NAME}"
+                    }
                 }
             }
         }
@@ -54,9 +56,11 @@ pipeline {
                      env.BRANCH_NAME == 'develop' && params.release_version == '';
                 }
             }
-            stage('release') {
-                steps {
-                    bat 'echo release'
+            steps {
+                stage('release') {
+                    steps {
+                        bat 'echo release'
+                    }
                 }
             }
         }
