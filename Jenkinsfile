@@ -24,18 +24,9 @@ pipeline {
                     }
                 }
                 stage('Test') {
-                    parallel {
-                        stage('some Tests') {
-                          steps {
-                            bat 'echo some Test'
-                          }
-                        }
-                        stage('More Tests') {
-                          steps {
-                            bat 'echo More Tests'
-                          }
-                        }
-                    }
+                     steps {
+                        bat 'echo some Test'
+                      }
                 }
                 stage('Git push tag') {
                     steps {
