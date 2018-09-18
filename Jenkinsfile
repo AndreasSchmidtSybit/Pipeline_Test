@@ -1,44 +1,65 @@
 pipeline {
     agent any
     parameters {
+       booleanParam(name: 'build', defaultValue: true, description: 'Build project')
+       booleanParam(name: 'deploy', defaultValue: false, description: 'Deploy project')
        string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
     }
     stages {
-        stage('Build develop || master') {
+        stage ('Build') {
             when {
                 expression {
-                     env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && params.release_version != '';
+                    params.build == true;
                 }
             }
-            steps {
-              bat 'echo build with version:' + params.release_version
+            stages {
+                stage('Build develop || master') {
+                    when {
+                        expression {
+                             env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && params.release_version != '';
+                        }
+                    }
+                    steps {
+                      bat 'echo build with version:' + params.release_version
+                    }
+                }
+                stage('Test') {
+                    parallel {
+                        stage('some Tests') {
+                          steps {
+                            bat 'echo some Test'
+                          }
+                        }
+                        stage('More Tests') {
+                          steps {
+                            bat 'echo More Tests'
+                          }
+                        }
+                    }
+                }
+                stage('Git push tag') {
+                    steps {
+                          bat "echo Jobname : ${env.JOB_NAME}"
+                    }
+                }
             }
         }
-        stage('Test') {
-            parallel {
-                stage('some Tests') {
-                  steps {
-                    bat 'echo some Test'
-                  }
-                }
-                stage('More Tests') {
-                  steps {
-                    bat 'echo More Tests'
-                  }
-                }
-            }
-        }
-        stage('Deploy master') {
+
+        stage ('Build') {
             when {
-                branch 'master'
+                expression {
+                    params.deploy == true && params.release_version != '';
+                }
             }
-            steps {
-                bat 'echo deploy'
-            }
-        }
-        stage('Git push tag') {
-            steps {
-                  bat "echo Jobname : ${env.JOB_NAME}"
+            stages {
+                stage('Deploy') {
+                    when {
+                        branch 'master'
+                    }
+                    steps {
+                        bat 'echo deploy'
+                    }
+                }
             }
         }
     }
