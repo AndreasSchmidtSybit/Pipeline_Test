@@ -6,7 +6,7 @@ pipeline {
        string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
     }
     stages {
-        stage ('Build') {
+        stage ('Build Wrapper') {
             when {
                 expression {
                     params.build == true;
@@ -45,7 +45,7 @@ pipeline {
             }
         }
 
-        stage ('Build') {
+        stage ('Deploy Wrapper') {
             when {
                 expression {
                     params.deploy == true && params.release_version != '';
