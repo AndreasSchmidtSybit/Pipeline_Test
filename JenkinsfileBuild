@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-       booleanParam(name: 'build', defaultValue: true, description: 'Build project')
+       booleanParam(name: 'build', defaultValue: true, description: 'Build ze project')
        booleanParam(name: 'deploy', defaultValue: false, description: 'Deploy project')
        string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
     }
