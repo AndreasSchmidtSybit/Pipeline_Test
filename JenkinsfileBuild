@@ -34,7 +34,7 @@ pipeline {
                 stage('Git push tag') {
                     steps {
                       script {
-                          bat 'quotes test \\"in quotes \\"'
+                          bat 'echo quotes test \\"in quotes \\"'
                       }
                     }
                 }
