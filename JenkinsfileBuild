@@ -34,7 +34,8 @@ pipeline {
                 stage('Git push tag') {
                     steps {
                       script {
-                          bat 'git --version'
+                          bat 'git tag -a \"' + params.release_version + '\" -m \"created release tag by Jenkins build ${BUILD_NUMBER}\"'
+                          bat 'git push origin --tags'
                       }
                     }
                 }
