@@ -5,6 +5,9 @@ pipeline {
        booleanParam(name: 'deploy', defaultValue: false, description: 'Deploy project')
        string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
     }
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
     stages {
         stage ('Build Wrapper') {
             when {
