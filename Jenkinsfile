@@ -9,50 +9,32 @@ pipeline {
         pollSCM('H/5 * * * *')
     }
     stages {
-        stage ('Build Wrapper') {
+        stage('Build develop || master') {
             when {
                 expression {
-                    params.build == true;
+                     env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && params.release_version != '';
                 }
             }
-            stages {
-                stage('Build develop || master') {
-                    when {
-                        expression {
-                             env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && params.release_version != '';
-                        }
-                    }
-                    steps {
-                      bat 'echo build with version:' + params.release_version
-                    }
-                }
-                stage('Test') {
-                     steps {
-                        bat 'echo some Test'
-                      }
-                }
-                stage('Git push tag') {
-                    steps {
-                          bat "echo Jobname : ${env.JOB_NAME}"
-                    }
-                }
+            steps {
+              bat 'echo build with version:' + params.release_version
+            }
+        }
+        stage('Test') {
+             steps {
+                bat 'echo some Test'
+              }
+        }
+        stage('Git push tag') {
+            steps {
+                  bat "echo Jobname : ${env.JOB_NAME}"
             }
         }
 
-        stage ('Deploy Wrapper') {
-            when {
-                expression {
-                    params.deploy == true && params.release_version != '';
-                }
-            }
-            stages {
-                stage('Deploy') {
-                    when {
-                        branch 'master'
-                    }
-                    steps {
-                        bat 'echo deploy'
-                    }
+        stage('Deploy') {
+            steps {
+                script {
+                    def buildParams = "-T " + params.release_version
+                    bat 'echo ${buildParams}'
                 }
             }
         }
