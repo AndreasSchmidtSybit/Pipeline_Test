@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     def buildParams = "-T " + params.release_version
-                    bat 'echo ${buildParams}'
+                    bat 'echo ' ${buildParams}
                 }
             }
         }
