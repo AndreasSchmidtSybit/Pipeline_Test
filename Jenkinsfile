@@ -4,6 +4,7 @@ pipeline {
        booleanParam(name: 'build', defaultValue: true, description: 'Build project')
        booleanParam(name: 'deploy', defaultValue: false, description: 'Deploy project')
        string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
+       gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
     }
     triggers {
         pollSCM('H/5 * * * *')
