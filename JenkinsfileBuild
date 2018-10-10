@@ -4,6 +4,7 @@ pipeline {
        booleanParam(name: 'build', defaultValue: true, description: 'Build ze project')
        booleanParam(name: 'deploy', defaultValue: false, description: 'Deploy project')
        string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
+       gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
     }
     triggers {
         pollSCM('H/5 * * * *')
@@ -34,8 +35,9 @@ pipeline {
                 stage('Git push tag') {
                     steps {
                       script {
-                          bat 'git tag -a \"' + params.release_version + '\" -m \"created release tag by Jenkins build ${BUILD_NUMBER}\"'
-                          bat 'git push origin --tags'
+                            bat 'echo git'
+                          //bat 'git tag -a \"' + params.release_version + '\" -m \"created release tag by Jenkins build ${BUILD_NUMBER}\"'
+                          //bat 'git push origin --tags'
                       }
                     }
                 }
