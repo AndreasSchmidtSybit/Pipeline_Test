@@ -6,9 +6,6 @@ pipeline {
        string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
        gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
     }
-    triggers {
-        pollSCM('H/5 * * * *')
-    }
     stages {
         stage ('Build Wrapper') {
             when {
