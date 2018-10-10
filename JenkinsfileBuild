@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+    parameters {
+       booleanParam(name: 'build', defaultValue: true, description: 'Build ze project')
+       booleanParam(name: 'deploy', defaultValue: false, description: 'Deploy project')
+       string(name: 'release_version', defaultValue: '', description: 'Release Version to build')
+       gitParameter branchFilter: 'origin/(.*)', defaultValue: 'master', name: 'BRANCH', type: 'PT_BRANCH'
+    }
+    stages {
+        stage ('Build Wrapper') {
+            when {
+                expression {
+                    params.build == true;
+                }
+            }
+            stages {
+                stage('Build develop || master') {
+                    when {
+                        expression {
+                             env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop' && params.release_version != '';
+                        }
+                    }
+                    steps {
+                      bat 'echo build with version:' + params.release_version
+                    }
+                }
+                stage('Test') {
+                     steps {
+                        bat 'echo some Test'
+                      }
+                }
+                stage('Git push tag') {
+                    steps {
+                      script {
+                            bat 'echo git'
+                          //bat 'git tag -a \"' + params.release_version + '\" -m \"created release tag by Jenkins build ${BUILD_NUMBER}\"'
+                          //bat 'git push origin --tags'
+                      }
+                    }
+                }
+            }
+        }
+
+        stage ('Deploy Wrapper') {
+            when {
+                expression {
+                    params.deploy == true && params.release_version != '';
+                }
+            }
+            stages {
+                stage('Deploy') {
+                    when {
+                        branch 'master'
+                    }
+                    steps {
+                        bat 'echo deploy'
+                    }
+                }
+            }
+        }
+    }
+    post {
+        failure {
+            mail (from: 'jenkins.sybit.de',
+                  to: 'ast@sybit.de',
+                  subject: "Build failed: ${env.JOB_NAME}",
+                  body: "Build failed: ${env.JOB_NAME}")
+        }
+    }
+}
