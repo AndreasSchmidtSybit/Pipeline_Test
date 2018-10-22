@@ -36,6 +36,11 @@ pipeline {
                 }
             }
         }
+        stage('Github notify') {
+            steps {
+                githubNotify description: 'This is an example',  status: 'SUCCESS'
+            }
+        }
     }
     post {
         failure {
